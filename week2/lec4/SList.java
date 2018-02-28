@@ -1,17 +1,17 @@
+/* Represent a list of integers, where all the "list" work is delegated
+ * to a naked IntList. */
+
 public class SList {
-
-	/* IntNode Class */
 	public class IntNode {
-		public int item;
-		public IntNode next;
+		public int item;     /* Equivalent of first */
+		public IntNode next; /* Equivalent of rest */
 
-		public IntNode(int i, IntNode n) {
+		public IntNode(int i, IntNode h) {
 			item = i;
-			next = n;
+			next = h;		
 		}
-	}
+	} 
 
-	/* SList Class */
 	private IntNode sentinel = new IntNode(0, null);
 	private IntNode front;
 	private int size;
@@ -21,25 +21,30 @@ public class SList {
 		if(sentinel == null) System.out.println("sentinel is null.");
 		else System.out.println("sentinel is not null.");
 	}
-
-
-
+	/** Creates an empty list. */
 	public SList() {
 		size = 0;
 	}
+
 	public SList(int x) {
 		front = new IntNode(x, null);
 		sentinel.item = 0;
 		sentinel.next = front;
 		size = 0;
 	}
-	public int getSize() {
-		return size;
-	}
+
+	/** Adds an item of the front. */
 	public void insertFront(int x) {
 		size++;
 		front = new IntNode(x, front);
 	}
+
+	/** Gets the front item of the list. */
+	public int getFront() {
+		return front.item;
+	}
+
+	/** Puts an item at the back of the list. */
 	public void insertBack(int x) {
 		size++;
 		IntNode p = sentinel;
@@ -49,9 +54,17 @@ public class SList {
 		p.next = new IntNode(x, null);
 		if(front == null) front = sentinel.next;
 	}
-	public int getFront() {
-		return front.item;
+
+	/** Returns the back node of our list. */
+	private IntNode getBackNode() {
+		IntNode p = sentinel;
+		while(p.next != null) {
+			p = p.next;
+		}
+		return p;
 	}
+
+	/** Returns last item */
 	public int getBack() {
 		IntNode p = sentinel;
 		while(p.next != null) {
@@ -60,27 +73,17 @@ public class SList {
 		return p.item;
 	}
 
-	public void printList() {
-		IntNode p = front;
-		while(p != null) {
-			System.out.println(p.item);
-			//System.out.println("Hi");
-			p = p.next;
-		}
+	public int size() {
+		return size;
 	}
 
-
-	/* main */
 	public static void main(String[] args) {
 		SList s1 = new SList();
 		s1.insertBack(6);
 		s1.insertFront(4);
 		s1.insertFront(3);
-		//System.out.println(s1.getSize());
-		//System.out.println(s1.getFront());
-		//System.out.println(s1.getBack());
-		s1.printList();
-
+		System.out.println(s1.getBack());
+		System.out.println(s1.getFront());
+		System.out.println(s1.size());
 	}
-
-}
+} 
