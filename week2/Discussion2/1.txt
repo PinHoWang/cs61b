@@ -1,0 +1,8 @@
+a) The result will show: "Name: Pikachu, Level: 100"
+b)
+	+---+
+	| p |
+	+---+
+
+				
+				
