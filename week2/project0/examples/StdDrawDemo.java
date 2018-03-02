@@ -14,6 +14,7 @@ public class StdDrawDemo {
 
 	/* Draws three copies of the image in a rectangular pattern. */
 	public static void drawThree() {
+		System.out.println("drawThree!");
 		/** Sets up the universe so it goes from 
 		  * -100, -100 up to 100, 100 */
 		StdDraw.setScale(-100, 100);
@@ -33,6 +34,7 @@ public class StdDrawDemo {
 	/* Draws random copies of the image, clearing in between
 	 * drawings. */
 	public static void drawRandom() {
+		System.out.println("drawRandom!");
 		int waitTimeMilliseconds = 100;
 
 		/* Stamp 100 additional pictures in random locations,
@@ -63,6 +65,7 @@ public class StdDrawDemo {
 	  * which is position (0, 0). Slowly zoom in on the image, 
 	  * then zoom back out (but faster than we zoomed in). */
 	public static void drawZoom() {
+		System.out.println("drawZoom!");
 		double size = 100;
 		while (size < 500) {
 			StdDraw.clear();
