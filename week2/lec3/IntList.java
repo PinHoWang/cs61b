@@ -2,6 +2,8 @@
  *  @author Josh Hug
  */
 
+import java.lang.Math.*;
+
 public class IntList {
     public int head;
     public IntList tail;
@@ -89,6 +91,25 @@ public class IntList {
         }
         return L;
     }    
+
+    /* Destructively squares each element of the given IntList L.
+     * Don't use 'new'; modify the original IntList.
+     * Should be written iteratively. */
+    public static IntList SquareDestructive(IntList L) {
+        IntList p = L;
+        while(p != null) {
+            p.head = Math.pow(p.head, 2);
+            p = p.tail;
+        }
+        return L;
+    }
+
+    /** Non-destructively squares each element of the given IntList L.
+      * Don't modify the given IntList.
+      * Should be written recurseively. */
+    public static IntList SquareNonDestructive(IntList L) {
+        IntList p = new IntList(L.head, p.tail);
+    }
 
     public static void main(String[] args) {
 

@@ -44,7 +44,7 @@ public class NBody {
 		/* make sure 3 command line arguments */
 		if(args.length != 3) {
 			System.out.println("Error: need 3 arguments.");
-			System.out.println("Usage: javac NBody [ time loop ] [ time ] [ filename ]");
+			System.out.println("Usage: java NBody [ time loop ] [ time ] [ filename ]");
 			System.exit(0);
 		}
 
