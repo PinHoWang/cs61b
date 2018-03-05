@@ -100,6 +100,15 @@ public class NBody {
 			StdDraw.show(50);
 		}
 
+		/* Print the Universe */
+		StdOut.printf("%d\n", P.length);
+		StdOut.printf("%.2e\n", radius);
+		for(int i = 0; i < P.length; i++) {
+			StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+							P[i].xxPos, P[i].yyPos, P[i].xxVel,
+							P[i].yyVel, P[i].mass, P[i].imgFileName);
+		}
+
 		//System.out.println("END");
 		
 	}

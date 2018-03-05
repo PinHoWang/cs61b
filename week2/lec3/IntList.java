@@ -108,7 +108,12 @@ public class IntList {
       * Don't modify the given IntList.
       * Should be written recurseively. */
     public static IntList SquareNonDestructive(IntList L) {
-        IntList p = new IntList(L.head, p.tail);
+        if(L == null) return L;
+        else {
+            IntList tail = SquareNonDestructive(L.tail);
+            IntList M = new IntList(L.head * L.head, tail);
+            return M;
+        }
     }
 
     public static void main(String[] args) {
