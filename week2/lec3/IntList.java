@@ -96,23 +96,40 @@ public class IntList {
      * Don't use 'new'; modify the original IntList.
      * Should be written iteratively. */
     public static IntList SquareDestructive(IntList L) {
+        /* iteratively 
         IntList p = L;
         while(p != null) {
-            p.head = Math.pow(p.head, 2);
+            p.head = p.head * p.head;
             p = p.tail;
+        }
+        return L;
+        */
+
+        /* recurseively */
+        if(L == null) return L;
+        else {
+            L.head = L.head * L.head;
+            SquareDestructive(L.tail);
         }
         return L;
     }
 
-    /** Non-destructively squares each element of the given IntList L.
-      * Don't modify the given IntList.
+    /** Non-destructively squares each element of the given IntList L
       * Should be written recurseively. */
     public static IntList SquareNonDestructive(IntList L) {
+        /* 
         if(L == null) return L;
         else {
             IntList tail = SquareNonDestructive(L.tail);
             IntList M = new IntList(L.head * L.head, tail);
             return M;
+        }
+        */
+
+        /* iteratively */
+        IntList p = L;
+        while(p != null) {
+            IntList M = new IntList(p.head * p.head, )
         }
     }
 
@@ -125,9 +142,11 @@ public class IntList {
         System.out.println(L.size());
         System.out.println(L.iterativeSize());        
         System.out.println(L.get(2));
-        System.out.println(incrList(L, 3));
-        System.out.println(dincrList(L, 3));  
-        System.out.println(L.toString());
+        //System.out.println(incrList(L, 3));
+        //System.out.println(dincrList(L, 3));  
+        //System.out.println(L.toString());
+        System.out.println(SquareDestructive(L));
+        //System.out.println(SquareNonDestructive(L));
 
     }
 } 
