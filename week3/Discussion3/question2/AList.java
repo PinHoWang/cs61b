@@ -74,7 +74,20 @@ public class AList {
     /* Discussion 3 - 2.3 - Xify: Replace the ith item with x[i]
      * copies of itself */
     public void xify() {
- 
+        /* calculate need space */
+        int space = 0;
+        for(int k = 0; k < size; k++)
+            space += items[k];
+        int[] newA = new int[space];
+        int position = 0;
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < items[i]; j++) {
+                newA[position + j] = items[i];
+            }
+            position += items[i];
+        }
+
+        //for(int l = 0; l < space; l++) System.out.println(newA[l]);
     } 
 
     /** Returns the number of items in the list. */
@@ -92,7 +105,8 @@ public class AList {
         // System.out.println(l.deleteBack());
         // System.out.println(l.getBack());
         //l.insert(3, 1);
-        l.reverse();
+        //l.reverse();
+        l.xify();
         // for(int i = 0; i < l.size(); i++) {
         //     System.out.println(l.get(i));
         // }
