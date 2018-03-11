@@ -1,11 +1,11 @@
 
-public class LinkedListDeque<type> implements Deque<type> {
+public class LinkedListDeque<Type> implements Deque<Type> {
 	/* Node class */
 	public class Node {
-		public type item;
+		public Type item;
 		public Node prev;
 		public Node next;
-		public Node(type i, Node p, Node n) {
+		public Node(Type i, Node p, Node n) {
 			item = i;
 			prev = p;
 			next = n;
@@ -20,7 +20,7 @@ public class LinkedListDeque<type> implements Deque<type> {
 		size = 0;
 		sentinel = new Node(null, null, null);
 	}
-	public LinkedListDeque(type x) {
+	public LinkedListDeque(Type x) {
 		size = 1;
 		sentinel = new Node(null, null, null);
 		sentinel.next = new Node(x, null,null);
@@ -29,7 +29,7 @@ public class LinkedListDeque<type> implements Deque<type> {
 	}
 
 	@Override
-	public void addFirst(type x) {
+	public void addFirst(Type x) {
 		if(isEmpty()) {
 			sentinel.next = new Node(x, null, null);
 			sentinel.next.prev = sentinel.next;
@@ -47,7 +47,7 @@ public class LinkedListDeque<type> implements Deque<type> {
 	}
 
 	@Override
-	public void addLast(type x) {
+	public void addLast(Type x) {
 		if(isEmpty()) {
 			sentinel.next = new Node(x, null, null);
 			sentinel.next.prev = sentinel.next;
@@ -83,20 +83,20 @@ public class LinkedListDeque<type> implements Deque<type> {
 	}
 
 	@Override
-	public type removeFirst() {
+	public Type removeFirst() {
 		if(isEmpty()) {
 			System.out.println("Nothing to remove.");
 			System.exit(-1);
 		}
 		
 		if(size == 1) {
-			type i = sentinel.next.item;
+			Type i = sentinel.next.item;
 			sentinel.next = null;
 			size--;
 			return i;
 		}
 		else {
-			type i = sentinel.next.item;
+			Type i = sentinel.next.item;
 			Node front = sentinel.next.next;
 			Node back = sentinel.next.prev;
 			front.prev = back;
@@ -108,20 +108,20 @@ public class LinkedListDeque<type> implements Deque<type> {
 	}
 
 	@Override
-	public type removeLast() {
+	public Type removeLast() {
 		if(isEmpty()) {
 			System.out.println("Nothing to remove.");
 			System.exit(-1);
 		}
 		
 		if(size == 1) {
-			type i = sentinel.next.item;
+			Type i = sentinel.next.item;
 			sentinel.next = null;
 			size--;
 			return i;
 		}
 		else {
-			type i = sentinel.next.prev.item;
+			Type i = sentinel.next.prev.item;
 			Node front = sentinel.next;
 			Node back = front.prev.prev;
 			front.prev = back;
@@ -132,7 +132,7 @@ public class LinkedListDeque<type> implements Deque<type> {
 	}
 
 	@Override
-	public type get(int index) {
+	public Type get(int index) {
 		if((index > size - 1) || index < 0) {
 			System.out.println("Index is larger than the Qeque size or smaller than 0.");
 			System.exit(-1);
