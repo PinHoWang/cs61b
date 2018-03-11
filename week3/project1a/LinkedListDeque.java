@@ -30,7 +30,7 @@ public class LinkedListDeque<type> implements Deque<type> {
 
 	@Override
 	public void addFirst(type x) {
-		if(sentinel.next == null) {
+		if(isEmpty()) {
 			sentinel.next = new Node(x, null, null);
 			sentinel.next.prev = sentinel.next;
 			sentinel.next.next = sentinel.next;
@@ -46,22 +46,89 @@ public class LinkedListDeque<type> implements Deque<type> {
 		}
 	}
 
-	// @Override
-	// public void addLast(type x) {
-	// 	if(sentinel.next == null) {
-	// 		sentinel.next = new Node(x, null, null);
-	// 		sentinel.next.prev = sentinel.next;
-	// 		sentinel.next.next = sentinel.next;
-	// 		size++;
-	// 	}
-	// 	else {
+	@Override
+	public void addLast(type x) {
+		if(isEmpty()) {
+			sentinel.next = new Node(x, null, null);
+			sentinel.next.prev = sentinel.next;
+			sentinel.next.next = sentinel.next;
+			size++;
+		}
+		else {
+			Node p = sentinel.next.prev;
+			Node newNode = new Node(x, p, p.next);
+			p.next = newNode;
+			sentinel.next.prev = newNode;
+			size++;
+		}
+	}
 
-	// 	}
-	// }
+	@Override
+	public boolean isEmpty() {
+		if(size == 0) return true;
+		else return false;
+	}
 
 	@Override
 	public int size() {
 		return size;
+	}
+
+	@Override
+	public void printDeque() {
+		for(int i = 0; i < size(); i++) {
+			System.out.print(get(i) + " ");
+		}
+		System.out.println();
+	}
+
+	@Override
+	public type removeFirst() {
+		if(isEmpty()) {
+			System.out.println("Nothing to remove.");
+			System.exit(-1);
+		}
+		
+		if(size == 1) {
+			type i = sentinel.next.item;
+			sentinel.next = null;
+			size--;
+			return i;
+		}
+		else {
+			type i = sentinel.next.item;
+			Node front = sentinel.next.next;
+			Node back = sentinel.next.prev;
+			front.prev = back;
+			back.next = front;
+			sentinel.next = front;
+			size--;
+			return i;
+		}
+	}
+
+	@Override
+	public type removeLast() {
+		if(isEmpty()) {
+			System.out.println("Nothing to remove.");
+			System.exit(-1);
+		}
+		
+		if(size == 1) {
+			type i = sentinel.next.item;
+			sentinel.next = null;
+			size--;
+			return i;
+		}
+		else {
+			type i = sentinel.next.prev.item;
+			Node front = sentinel.next;
+			Node back = front.prev.prev;
+			front.prev = back;
+			back.next = front;
+			size--;
+			return i;
+		}
 	}
 
 	@Override
@@ -80,14 +147,18 @@ public class LinkedListDeque<type> implements Deque<type> {
 
 
 	/* main function */
+	/*
 	public static void main(String[] args) {
 		LinkedListDeque<Integer> L = new LinkedListDeque<Integer>();
 		LinkedListDeque<String> Q = new LinkedListDeque<String>("yoo");
 		L.addFirst(1);
-		Q.addFirst("YOO");
-		L.print();
-		Q.print();
-
-
+		//Q.addFirst("YOO");
+		L.addLast(5);
+		//Q.addLast("MAO");
+		//System.out.println(Q.removeFirst());
+		System.out.println(L.removeLast());
+		L.printDeque();
+		Q.printDeque();
 	}
+	*/
 }
