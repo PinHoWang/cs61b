@@ -3,7 +3,7 @@
 public interface Deque<Type> {
 	/* Methods */
 	public void addFirst(Type x);	/* Adds an item to the front of the Deque */
-	//public void addLast(Type x);	/* Adds an item to the back of the Deque */
+	public void addLast(Type x);	/* Adds an item to the back of the Deque */
 	public boolean isEmpty();	/* Returns true if deque is empty, false otherwise */
 	public int size();			/* Returns the number of items in the Deque */
 	public void printDeque();	/* Prints the items in teh Deque from first to

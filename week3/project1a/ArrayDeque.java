@@ -2,6 +2,7 @@
 public class ArrayDeque<Type> implements Deque<Type> {
 	
 	private Type[] items;
+	private int itemsCap;
 	private int size;
 	private int nextFirst = 4;
 	private int nextLast = nextFirst + 1;
@@ -10,6 +11,7 @@ public class ArrayDeque<Type> implements Deque<Type> {
 	public ArrayDeque() {
 		size = 0;
 		items = (Type[]) new Object[8];
+		itemsCap = items.length;
 	}
 
 
@@ -18,15 +20,25 @@ public class ArrayDeque<Type> implements Deque<Type> {
 		System.arraycopy(items, 0, a, 0, nextFirst);
 		System.arraycopy(items, nextFirst + 1, a, capacity - size + nextFirst, size - nextFirst);
 		items = a;
+		itemsCap = items.length;
 		nextFirst = capacity - size + nextFirst - 1;
 	}
 
 	@Override
 	public void addFirst(Type x) {
-		if(nextFirst == nextLast) resize(items.length * RFACTOR);
+		if(nextFirst == nextLast) resize(itemsCap * RFACTOR);
 		items[nextFirst] = x;
 		nextFirst--;
-		if(nextFirst == -1) nextFirst = items.length - 1;
+		if(nextFirst == -1) nextFirst = itemsCap - 1;
+		size++;
+	}
+
+	@Override
+	public void addLast(Type x) {
+		if(nextFirst == nextLast) resize(itemsCap * RFACTOR);
+		items[nextLast] = x;
+		nextLast++;
+		if(nextLast > itemsCap - 1) nextLast = 0;
 		size++;
 	}
 
@@ -53,7 +65,7 @@ public class ArrayDeque<Type> implements Deque<Type> {
 	public Type removeFirst() {
 		if(size == 0) return null;
 		int removeIndexF = nextFirst + 1;
-		if(removeIndexF > (items.length - 1)) removeIndexF = 0;
+		if(removeIndexF > (itemsCap - 1)) removeIndexF = 0;
 		Type i = items[removeIndexF];
 		items[removeIndexF] = null;
 		nextFirst++;
@@ -65,7 +77,7 @@ public class ArrayDeque<Type> implements Deque<Type> {
 	public Type removeLast() {
 		if(size == 0) return null;
 		int removeIndexL = nextLast - 1;
-		if(removeIndexL < 0) removeIndexL = items.length - 1;
+		if(removeIndexL < 0) removeIndexL = itemsCap - 1;
 		Type i = items[removeIndexL];
 		items[removeIndexL] = null;
 		
@@ -79,8 +91,8 @@ public class ArrayDeque<Type> implements Deque<Type> {
 	@Override
 	public Type get(int index) {
 		int position;
-		if((nextFirst + index + 2) > items.length) {
-			position = index - (items.length - nextFirst - 1);
+		if((nextFirst + index + 2) > itemsCap) {
+			position = index - (itemsCap - nextFirst - 1);
 			return items[position];
 		}
 		else {
@@ -91,13 +103,18 @@ public class ArrayDeque<Type> implements Deque<Type> {
 	public static void main(String[] args) {
 		ArrayDeque<Integer> A = new ArrayDeque<Integer>();
 		for(int j = 0; j < 5; j++) {
-			A.addFirst(j);
+			A.addLast(j);
 		}
+		// for(int i = 5; i < 10; i++) {
+		// 	A.addFirst(i);
+		// }
 		System.out.println("Size: " + A.size());
 		A.printDeque();
-		System.out.println(A.removeFirst());
+		for(int i = 0; i < 6; i++) {
+			System.out.println(A.removeFirst());
+		}
 		A.printDeque();
-		System.out.println(A.removeLast());
-		A.printDeque();
+		// System.out.println(A.removeLast());
+		// A.printDeque();
 	}
 }
