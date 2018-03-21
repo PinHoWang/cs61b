@@ -16,6 +16,9 @@ public class IntList {
         sizeOfIntList += 1;
     }
 
+    public IntList(int i) {
+    }
+
     /** Retuns the size of this IntList */
     public int size() {
         /* your code here */       
@@ -129,7 +132,7 @@ public class IntList {
         /* iteratively */
         IntList p = L;
         while(p != null) {
-            IntList M = new IntList(p.head * p.head, )
+            IntList M = new IntList(p.head * p.head);
         }
     }
 

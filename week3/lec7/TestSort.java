@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 /** This class tests the Sort class. */
 public class TestSort {	
 	/** Tests the Sort.sort method */
-	@Test
+	
 	public void testSort() {
 		String[] inputs = {"milvia", "zero", "josh", "trump"};
 		String[] expected = {"josh", "milvia", "trump", "zero"};
@@ -13,7 +13,7 @@ public class TestSort {
 		assertArrayEquals(expected, actual);
 	}
 
-	@Test
+	
 	public void testIndexOfSmallest() {
 		String[] inputs = {"milvia", "zero", "josh", "trump"};
 		int expected = 2;
