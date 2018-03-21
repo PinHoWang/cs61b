@@ -32,9 +32,11 @@ public class TestArrayDeque1B {
 
 
 		/* Remove methods */
-		for(int n = 0; n < 5; n++) result.removeLast();
-		for(int o = 0; o < 5; o++) actual.removeLast();
+		for(int n = 0; n < 5; n++) result.removeFirst();
+		for(int o = 0; o < 5; o++) actual.removeFirst();
 		
+		/* Testing */
+		/* Test size */
 		assertEquals(result.size(), actual.size());
 
 		/* Test items position */
