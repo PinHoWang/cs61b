@@ -4,48 +4,69 @@ import static org.junit.Assert.*;
 /* Give a JUnit test that StudentArrayDeque fails */
 public class TestArrayDeque1B {
 
+	private static StudentArrayDeque<Integer> result = new StudentArrayDeque<Integer>();
+	private static ArrayDequeSolution<Integer> actual = new ArrayDequeSolution<Integer>();
+
+
+	public static void TestAll() {
+		/* Testing size */
+		assertEquals("\nError: The actual Deque size is " + actual.size()
+			+ "\nBut the result size is "
+			+ result.size() + "\n", actual.size(), result.size());
+		/* Testing items */
+		for(int j = 0; j < actual.size(); j++) {
+			assertEquals("\nError: The actual add items is " + actual.get(j)
+				+ "\nBut the result item is " 
+				+ result.get(j) + "\n", actual.get(j), result.get(j));
+		}
+	}
+
+
+	public static void TestAddFirst() {
+		for(int i = 0; i < 10; i++) {
+			result.addFirst(i);
+			actual.addFirst(i);
+			System.out.println("addFirst(" + i + ")");
+			TestAll();
+		}
+	}
+
+	public static void TestAddLast() {
+		for(int i = 0; i < 10; i++) {
+			result.addFirst(i);
+			actual.addFirst(i);
+			System.out.println("addLast(" + i + ")");
+			TestAll();
+		}
+	}
+
+	public static void TestremoveFirst() {
+		for(int i = 0; i < 10; i++) {
+			result.removeFirst();
+			actual.removeFirst();
+			System.out.println("removeFirst()");
+			TestAll();
+		}
+	}
+
+	public static void TestremoveLast() {
+		for(int i = 0; i < 20; i++) {
+			result.removeLast();
+			actual.removeLast();
+			System.out.println("removeLast()");
+			TestAll();
+		}
+	}
+
 	public static void main(String[] args) {
-		/* Create Testing AList result */
-		StudentArrayDeque<Integer> result = new StudentArrayDeque<Integer>();
-		/* ADD methods */
-		for(int i = 0; i < 16; i++) result.addFirst(i);
-		//for(int k = 0; k > -16; k--) result.addLast(k);
-
-
-		/* Create Actually AList actual */
-		ArrayDequeSolution<Integer> actual = new ArrayDequeSolution<Integer>();
-		/* ADD methods */
-		for(int j = 0; j < 16; j++) actual.addFirst(j);
-		//for(int l = 0; l > -16; l--) actual.addLast(l);
-
-
 		
-
-		/* Testing */
-		/* Test size */
-		assertEquals(result.size(), actual.size());
-
-		/* Test items position */
-		for(int m = 0; m < actual.size(); m++) {
-			assertEquals(result.get(m), actual.get(m));
-		}
-
-
-		/* Remove methods */
-		for(int n = 0; n < 5; n++) result.removeFirst();
-		for(int o = 0; o < 5; o++) actual.removeFirst();
-		
-		/* Testing */
-		/* Test size */
-		assertEquals(result.size(), actual.size());
-
-		/* Test items position */
-		for(int m = 0; m < actual.size(); m++) {
-			assertEquals(result.get(m), actual.get(m));
-		}
-
-
-
-		
+		/* Testing addFirst() */
+		TestAddFirst();
+		/* Testing addLast() */
+		//TestAddLast();
+		/* Testing removeFirst() */
+		//TestremoveFirst();
+		/* Testing removeLast() */
+		TestremoveLast();
 	}
 }
