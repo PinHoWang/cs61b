@@ -14,6 +14,7 @@ public class Palindrome {
 
 	/* Return true if the given word is a palindrome
 	 * Any word of length 1 or 0 is a palindrome. */
+	/* Basic isPalindrome method (OffByZero)
 	public static boolean isPalindrome(String word) {
 		int length = word.length();
 		if(length == 0 || length == 1) return true;
@@ -25,4 +26,24 @@ public class Palindrome {
 		}
 		return true;
 	}
+	*/
+
+	/* Generallized isPalindrome method
+	 * The method will return true if the word is a palindrome (OffByN) 
+	 * according to the character comparison test provided by the 
+	 * CharacterComparator passed in as argument cc */
+	public static boolean isPalindrome(String word, CharacterComparator cc) {
+		int length = word.length();
+		if(length == 0 || length == 1) return true;
+
+		Deque<Character> check = wordToDeque(word);
+		for(int i = 0; i < length/2; i++) {
+			if(!cc.equalChars(check.get(i), check.get(length - 1 - i)))
+				return false;
+		}
+		return true;
+	}
+
 }
+
+
