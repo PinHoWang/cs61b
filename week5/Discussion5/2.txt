@@ -1,5 +1,0 @@
-1. It can use PriorityQueue to put the largest frequency of words as the highest priority.
-
-2. List?
-
-3. It can use Stack to store the current web page, and pop out the current as the back button.

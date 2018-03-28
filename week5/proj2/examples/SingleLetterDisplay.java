@@ -48,8 +48,8 @@ public class SingleLetterDisplay extends Application {
         private String fontName = "Verdana";
 
         KeyEventHandler(final Group root, int windowWidth, int windowHeight) {
-            textCenterX = windowWidth / 2;
-            textCenterY = windowHeight / 2;
+            textCenterX = windowWidth / 2; // 250
+            textCenterY = windowHeight / 2; // 250
 
             // Initialize some empty text and add it to root so that it will be displayed.
             displayText = new Text(textCenterX, textCenterY, "");

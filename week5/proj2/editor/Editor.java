@@ -21,6 +21,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 
+import java.util.LinkedList;
+
 
 
 
@@ -41,8 +43,8 @@ public class Editor extends Application {
         int textCenterX;
         int textCenterY;
 
-        private static final int STARTING_TEXT_POSITION_X = 0;
-        private static final int STARTING_TEXT_POSITION_Y = 0;
+        private static final int STARTING_TEXT_POSITION_X = 250;
+        private static final int STARTING_TEXT_POSITION_Y = 250;
         private static final int STARTING_FONT_SIZE = 20;
 
         /** The Text to display on the screen. */
@@ -51,9 +53,12 @@ public class Editor extends Application {
 
         private String fontName = "Verdana";
 
+        /* Store keyEvent in the LinkedList */
+        LinkedList<String> eventList;
+
         KeyEventHandler(final Group root, int windowWidth, int windowHeight) {
-            textCenterX = 20;
-            textCenterY = 20;
+            textCenterX = STARTING_FONT_SIZE / 2;
+            textCenterY = STARTING_FONT_SIZE / 2;
 
             // Initialize some empty text and add it to root so that it will be displayed.
             displayText = new Text(textCenterX, textCenterY, "");
@@ -65,6 +70,9 @@ public class Editor extends Application {
             displayText.setTextOrigin(VPos.TOP);
             displayText.setFont(Font.font(fontName, fontSize));
             root.getChildren().add(displayText);
+
+            /* Construct keyEvnet List */
+            eventList = new LinkedList<String>();
         }
 
         @Override
@@ -73,16 +81,37 @@ public class Editor extends Application {
                 // Use the KEY_TYPED event rather than KEY_PRESSED for letter keys, because with
                 // the KEY_TYPED event, javafx handles the "Shift" key and associated
                 // capitalization.
+                //System.out.println("KeyTyped");
                 String characterTyped = keyEvent.getCharacter();
-                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 8) {
+                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 127) {
+                	//System.out.println("Ignore ctrl, delete");
                     // Ignore control keys, which have zero length, as well as the backspace
                     // key, which is represented as a character of value = 8 on Windows.
-                    displayText.setText(characterTyped);
+                    eventList.add(characterTyped);
+                    String currentText = "";
+                    for(int i = 0; i < eventList.size(); i++) {
+                    	currentText += eventList.get(i);
+                    }
+                    displayText.setText(currentText);
+                    //System.out.println(displayText.getText());  
                     keyEvent.consume();
+                } else if(characterTyped.length() == 0 && eventList.size() != 0) { // Type "backspace" (Strange in macOS???)
+                	//System.out.println("Key backspace");
+                	eventList.removeLast();
+                	String currentText = "";
+                    for(int i = 0; i < eventList.size(); i++) {
+                    	currentText += eventList.get(i);
+                    }
+                    displayText.setText(currentText);
+                    //System.out.println(displayText.getText());  
+                    keyEvent.consume();
+                } else if(characterTyped.charAt(0) == 13) { // Type "Enter" to next line
+                	eventList.add("\n");
                 }
-
                 centerTextAndUpdateBoundingBox();
+
             } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
+            	//System.out.println("KeyPressed");
                 // Arrow keys should be processed using the KEY_PRESSED event, because KEY_PRESSED
                 // events have a code that we can check (KEY_TYPED events don't have an associated
                 // KeyCode).
@@ -104,21 +133,21 @@ public class Editor extends Application {
             double textHeight = displayText.getLayoutBounds().getHeight();
             double textWidth = displayText.getLayoutBounds().getWidth();
 
-            // Calculate the position so that the text will be centered on the screen.
-            double textTop = textCenterY - textHeight / 2;
-            double textLeft = textCenterX - textWidth / 2;
+            // Calculate the position so that the text will be Left-Top of the screen.
+            // double textTop = textCenterY;
+            // double textLeft = textCenterX;
 
             // Re-position the text.
-            displayText.setX(textLeft);
-            displayText.setY(textTop);
+            displayText.setX(textCenterX);
+            displayText.setY(textCenterY);
 
             // Re-size and re-position the bounding box.
-            textBoundingBox.setHeight(textHeight);
-            textBoundingBox.setWidth(textWidth);
+            textBoundingBox.setHeight(STARTING_FONT_SIZE);
+            textBoundingBox.setWidth(STARTING_FONT_SIZE / 2);
 
             // For rectangles, the position is the upper left hand corner.
-            textBoundingBox.setX(textLeft);
-            textBoundingBox.setY(textTop);
+            textBoundingBox.setX(textWidth);
+            textBoundingBox.setY(textCenterY);
             // Many of the JavaFX classes have implemented the toString() function, so that
             // they print nicely by default.
             System.out.println("Bounding box: " + textBoundingBox);
@@ -183,14 +212,16 @@ public class Editor extends Application {
         scene.setOnKeyPressed(keyEventHandler);
 
         // All new Nodes need to be added to the root in order to be displayed.
-        root.getChildren().add(textBoundingBox);
+        //root.getChildren().add(textBoundingBox);
         makeRectangleColorChange();
 
+        //System.out.println("YOOOOOOOOOOOÔPPPPP!");
         primaryStage.setTitle("Editor");
 
         // This is boilerplate, necessary to setup the window where things are displayed.
         primaryStage.setScene(scene);
         primaryStage.show();
+        //System.out.println("YOOOOOOOOOOOÔPPPPP");
     }
 
     public static void main(String[] args) {
