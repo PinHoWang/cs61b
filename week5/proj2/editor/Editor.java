@@ -83,7 +83,7 @@ public class Editor extends Application {
                 // capitalization.
                 //System.out.println("KeyTyped");
                 String characterTyped = keyEvent.getCharacter();
-                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 127) {
+                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 8) {
                 	//System.out.println("Ignore ctrl, delete");
                     // Ignore control keys, which have zero length, as well as the backspace
                     // key, which is represented as a character of value = 8 on Windows.
@@ -95,7 +95,7 @@ public class Editor extends Application {
                     displayText.setText(currentText);
                     //System.out.println(displayText.getText());  
                     keyEvent.consume();
-                } else if(characterTyped.length() == 0 && eventList.size() != 0) { // Type "backspace" (Strange in macOS???)
+                } else if(characterTyped.charAt(0) == 8 && eventList.size() != 0) { // Type "backspace" (Strange in macOS???)
                 	//System.out.println("Key backspace");
                 	eventList.removeLast();
                 	String currentText = "";
