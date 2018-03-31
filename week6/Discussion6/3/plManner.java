@@ -10,10 +10,16 @@ public class plManner {
 		compactLot C = new compactLot();
 
 
-		car r1 = new regular("AFQ-7237");
+		regular r1 = new regular("AFQ-7237");
 		R.entrance(r1);
-		car c1 = new compact("QQQ-3843");
-		C.entrance((c1);
+		compact c1 = new compact("QQQ-3843");
+		try {
+			C.entrance(r1);
+			throw new Exception("Disobedient!");
+		} catch(Exception e) {
+			R.entrance(c1);
+			System.out.println("Parking to regular.");
+		}
 
 	}
 }

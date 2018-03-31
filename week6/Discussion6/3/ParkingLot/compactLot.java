@@ -1,8 +1,9 @@
 
 package ParkingLot;
 
-public class compactLot implements parkingLot {
+public class compactLot {
 	
+	public final int compactSpace = 10;
 	private compact[] cSpace;
 	private int cSize;
 
@@ -11,7 +12,6 @@ public class compactLot implements parkingLot {
 		cSize = 0;
 	}
 
-	@Override
 	public boolean isSpaceFree() {
 		return cSize < compactSpace;
 	}
@@ -25,6 +25,6 @@ public class compactLot implements parkingLot {
 					return;
 				}
 			}
-		} else System.out.println("Regular parking lot is full!");
+		} else System.out.println("Compact parking lot is full!");
 	}
 }

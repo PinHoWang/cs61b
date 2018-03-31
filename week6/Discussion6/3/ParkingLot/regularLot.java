@@ -2,8 +2,9 @@
 package ParkingLot;
 
 /* Regular Lot */
-public class regularLot implements parkingLot {
+public class regularLot {
 	
+	public final int regularSpace = 15;
 	private regular[] rSpace;
 	private int rSize;
 
@@ -12,7 +13,6 @@ public class regularLot implements parkingLot {
 		rSize = 0;
 	}
 
-	@Override
 	public boolean isSpaceFree() {
 		return rSize < regularSpace;
 	}
