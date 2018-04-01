@@ -45,7 +45,7 @@ public class Clorus extends Creature {
 
     /** Do nothing with C, Plips are pacifists. */
     public void attack(Creature c) {
-    	energy += c.energy;
+    	energy += c.energy();
     }
 
     /** Plips should lose 0.15 units of energy when moving. If you want to
@@ -91,13 +91,18 @@ public class Clorus extends Creature {
         	return new Action(Action.ActionType.STAY);
         }
 
-        if(empties.size() == 1) {
-        	if(plips.size() > 0) {
-        		Direction moveDir = HugLifeUtils.randomEntry(plips);
-        		return new Action(Action.ActionType.ATTACK, moveDir);
-        	}
+        if(plips.size() > 0) {
+        	Direction moveDir = HugLifeUtils.randomEntry(plips);
+        	return new Action(Action.ActionType.ATTACK, moveDir);
         }
 
+        if(energy >= 1) {
+        	Direction moveDir = HugLifeUtils.randomEntry(empties);
+        	return new Action(Action.ActionType.REPLICATE, moveDir);
+        }
+
+        Direction moveDir = HugLifeUtils.randomEntry(empties);
+        return new Action(Action.ActionType.MOVE, moveDir);
 
     }
 
