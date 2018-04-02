@@ -19,22 +19,8 @@ public class TestClorus {
      * If you are submitting early, just put in "early" */
     public static final String MAGIC_WORD = "";
 
-    // @Test
-    // public void testBasics() {
-    //     Clorus c = new Clorus(2);
-    //     assertEquals(2, c.energy(), 0.01);
-    //     assertEquals(new Color(34, 231, 0), c.color());
-    //     c.move();
-    //     assertEquals(1.85, c.energy(), 0.01);
-    //     c.move();
-    //     assertEquals(1.70, c.energy(), 0.01);
-    //     c.stay();
-    //     assertEquals(1.90, c.energy(), 0.01);
-    //     c.stay();
-    //     assertEquals(2.00, c.energy(), 0.01);
-    // }
 
-    @Test
+    //@Test
     public void testReplicate() {
         Clorus c1 = new Clorus(2);
         Clorus c2;
@@ -44,10 +30,10 @@ public class TestClorus {
 
     @Test
     public void testChoose() {
-        Clorus c = new Clorus(1.2);
+        Clorus c = new Clorus(0.2);
         HashMap<Direction, Occupant> surrounded = new HashMap<Direction, Occupant>();
         surrounded.put(Direction.TOP, new Impassible());
-        surrounded.put(Direction.BOTTOM, new Impassible());
+        surrounded.put(Direction.BOTTOM, new Empty());
         surrounded.put(Direction.LEFT, new Impassible());
         surrounded.put(Direction.RIGHT, new Impassible());
 
@@ -56,7 +42,7 @@ public class TestClorus {
         //Sorry!  
 
         Action actual = c.chooseAction(surrounded);
-        Action expected = new Action(Action.ActionType.STAY);
+        Action expected = new Action(Action.ActionType.MOVE, Direction.BOTTOM);
         // Action expected = new Action(Action.ActionType.REPLICATE, Direction.TOP);
 
         assertEquals(expected, actual);

@@ -107,7 +107,7 @@ public class Plip extends Creature {
                 return new Action(Action.ActionType.MOVE, moveDir);
             }
         }
-        
+
         return new Action(Action.ActionType.STAY);
     }
 

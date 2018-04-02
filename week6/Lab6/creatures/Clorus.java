@@ -38,8 +38,8 @@ public class Clorus extends Creature {
     /** Should return a color with red = 34, blue = 0, and green = 231 */
     public Color color() {
         r = 34;
-        b = 0;
-        g = 231;
+        b = 231;
+        g = 0;
         return color(r, g, b);
     }
 
