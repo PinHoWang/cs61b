@@ -20,5 +20,6 @@ public interface BoundedQueue<T> {
 		return fillCount() == capacity();
 	}
 
+	public void printBuffer();
 
 }

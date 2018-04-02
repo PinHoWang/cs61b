@@ -1,6 +1,7 @@
 // TODO: Make sure to make this class a part of the synthesizer package
 package synthesizer;
 import java.util.Iterator;
+import java.util.Arrays;
 
 //TODO: Make sure to make this class and all of its methods public
 //TODO: Make sure to make this class extend AbstractBoundedQueue<t>
@@ -76,10 +77,13 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
-    public void initBufferZeros() {
-        Iterator<T> it = Arrays.asList(rb);
+    /* initalize the ring buffer to x for all elements */
+    
+    /* print out the Ring Buffer content */
+    public void printBuffer() {
+        Iterator<T> it = Arrays.stream(rb).iterator();
         while(it.hasNext()) {
-
+            System.out.print(it.next() + " ");
         }
     }
 }
