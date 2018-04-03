@@ -1,6 +1,8 @@
 
 package synthesizer;
 
+//import java.util.Iterator;
+
 /* PinHo Wang created in 2 Apr. 2018 */
 public interface BoundedQueue<T> {
 

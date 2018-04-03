@@ -5,22 +5,23 @@ import java.util.HashMap;
 public class GuitarHero {
     private static final double CONCERT_A = 440.0;
     //private static final double CONCERT_C = CONCERT_A * Math.pow(2, 3.0 / 12.0);
+    private static final int tones = 37; // 37 tones + 1 noise
 
     private static final String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
     private static HashMap<Character, Integer> keyMap;
 
     public static void hashKeyboard() {
         keyMap = new HashMap<Character, Integer>();
-        for(int i = 0; i < 37; i++) {
+        for(int i = 0; i < tones - 1; i++) {
             keyMap.put(keyboard.charAt(i), i);
         }
     }
 
     public static void main(String[] args) {
         /* create 37 guitar strings, for concert A and C */
-        synthesizer.GuitarString[] stringArray = new synthesizer.GuitarString[37];
+        synthesizer.GuitarString[] stringArray = new synthesizer.GuitarString[tones];
         hashKeyboard();
-        for(int i = 0; i < 37; i++) {
+        for(int i = 0; i < tones; i++) {
             double CONCERT = CONCERT_A * Math.pow(2, (i - 24) / 12.0);
             stringArray[i] = new synthesizer.GuitarString(CONCERT);
         }
@@ -31,17 +32,21 @@ public class GuitarHero {
 
             /* check if the user has typed a key; if so, process it */
             if (StdDraw.hasNextKeyTyped()) {
-                char key = StdDraw.nextKeyTyped();
-                if(keyMap.get(key) == null) {
-                    throw new NullPointerException("No corresponded key!");
+                try {
+                    char key = StdDraw.nextKeyTyped();
+                    if(keyMap.get(key) == null) {
+                        throw new NullPointerException("No corresponded key!");
+                    } 
+                    int value = (int) keyMap.get(key);
+                    stringArray[value].pluck();
+                } catch(NullPointerException e) {
+                    continue;
                 }
-                int value = (int) keyMap.get(key);
-                stringArray[value].pluck();
             }
 
         /* compute the superposition of samples */
             double sample = 0.0;
-            for(int j = 0; j < 37; j++) {
+            for(int j = 0; j < tones; j++) {
                 sample += stringArray[j].sample();
             }
 
@@ -49,7 +54,7 @@ public class GuitarHero {
             StdAudio.play(sample);
 
         /* advance the simulation of each guitar string by one step */
-            for(int k = 0; k < 37; k++) {
+            for(int k = 0; k < tones; k++) {
                 stringArray[k].tic();
             }
         }

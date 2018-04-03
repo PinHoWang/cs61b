@@ -51,6 +51,14 @@ public class GuitarString {
         //       Do not call StdAudio.play().
         double front = (double) buffer.dequeue();
         double back = (double) buffer.peek();
+
+        /* drum sound */
+        // double prop = Math.random();
+        // if(prop > 0.5) {
+        //     buffer.enqueue(-DECAY * 0.5*(front + back));
+        // } else {
+        //     buffer.enqueue(DECAY * 0.5*(front + back));
+        // }
         buffer.enqueue(DECAY * 0.5*(front + back));
     }
 
