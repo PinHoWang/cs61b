@@ -1,0 +1,34 @@
+4. Basic Interview Type Questions
+
+	public static int[] union(int[] A, int[] B) {
+		HashSet<int> set = new HashSet<int>();
+		for(int i = 0; i < A.length; i++) {
+			set.add(A[i]); // method add() run constant time
+		}
+
+		for(int j = 0; j < B.length; j++) {
+			// method contains() run constant time
+			if(!set.contains(B[j])) set.add(B[j]);
+		}
+		return set.toArray();
+	}
+
+
+	public static int[] intersection(int[] A, int[] B) {
+		HashSet<int> set = new HashSet<int>();
+		HashSet<int> inter = new HashSet<int>();
+
+		for(int i = 0; i < A.length; i++) {
+			set.add(A[i]);
+		}
+
+		for(int j = 0; j < B.length; j++) {
+			if(set.contains(B[j])) inter.add(B[j]);
+		}
+		return inter.toArray();
+	}
+
+	Runtime:
+		Omega(M + N)
+		O(M + N)
+

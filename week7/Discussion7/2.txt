@@ -1,0 +1,17 @@
+2. Analyzing Runtime
+	
+	A. Best Case Runtime: Omega(N)
+	   Worst Case Runtime: O(MN)
+	
+	B. Best Case Runtime: Omega(N log N)
+	   Worst Case Runtime: O(N^2)
+
+	mystery() check whether there are same element in the array.
+	If yes, return true, or false
+
+	Better Solution for mystery()?
+	
+	arr = mrpoolsort(arr) // sorted copy of arr in Theta(N log N)
+	for(int i = 0; i < N; i+=1 )
+		if(arr[i] == arr[i+1]) return true;
+	
