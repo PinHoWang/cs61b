@@ -22,6 +22,7 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 import java.util.LinkedList;
+import java.util.HashMap;
 
 
 public class Editor extends Application {
@@ -36,28 +37,34 @@ public class Editor extends Application {
     }
 
     private class KeyEventHandler implements EventHandler<KeyEvent> {
-        int textCenterX;
-        int textCenterY;
+        int startPosX;
+        int startPosY;
+        int totalRows;
 
-        private static final int STARTING_TEXT_POSITION_X = 250;
-        private static final int STARTING_TEXT_POSITION_Y = 250;
         private static final int STARTING_FONT_SIZE = 20;
 
         /** The Text to display on the screen. */
-        private Text displayText = new Text(STARTING_TEXT_POSITION_X, STARTING_TEXT_POSITION_Y, "");
+        private Text displayText;
         private int fontSize = STARTING_FONT_SIZE;
 
         private String fontName = "Verdana";
 
         /* Store keyEvent in the LinkedList */
-        LinkedList<String> eventList;
+        charLinkedList rowList;
+        /* Record the line of the eventList */
+        HashMap<Integer, charLinkedList> lineMap;
+        /* Store key corrdinate int the LinkedList */
+        // LinkedList<Double[2]> coordiList;
+        /* Record the corresponded coordinate */
+        // HashMap<Integer, LinkedList<Double[2]>> coordiMap;
+
 
         KeyEventHandler(final Group root, int windowWidth, int windowHeight) {
-            textCenterX = STARTING_FONT_SIZE / 2;
-            textCenterY = STARTING_FONT_SIZE / 2;
-
+            startPosX = STARTING_FONT_SIZE / 2;
+            startPosY = STARTING_FONT_SIZE / 2;
+            totalRows = 1;
             // Initialize some empty text and add it to root so that it will be displayed.
-            displayText = new Text(textCenterX, textCenterY, "");
+            displayText = new Text(startPosX, startPosY, "");
             // Always set the text origin to be VPos.TOP! Setting the origin to be VPos.TOP means
             // that when the text is assigned a y-position, that position corresponds to the
             // highest position across all letters (for example, the top of a letter like "I", as
@@ -68,7 +75,9 @@ public class Editor extends Application {
             root.getChildren().add(displayText);
 
             /* Construct keyEvnet List */
-            eventList = new LinkedList<String>();
+            rowList = new charLinkedList();
+            /* Construct line map */
+            lineMap.put(totalRows, rowList);
         }
 
 
@@ -79,31 +88,22 @@ public class Editor extends Application {
                 // the KEY_TYPED event, javafx handles the "Shift" key and associated
                 // capitalization.
                 //System.out.println("KeyTyped");
-                String characterTyped = keyEvent.getCharacter();
-                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 127) {
+                Character characterTyped = keyEvent.getCharacter();
+                if (characterTyped != 127) {
                 	//System.out.println("Ignore ctrl, delete");
                     // Ignore control keys, which have zero length, as well as the backspace
                     // key, which is represented as a character of value = 8 on Windows.
-                    eventList.add(characterTyped);
-                    String currentText = "";
-                    for(int i = 0; i < eventList.size(); i++) {
-                    	currentText += eventList.get(i);
-                    }
-                    displayText.setText(currentText);
+                    rowList.add(characterTyped, displayText.getLayoutBounds().getHeight(), displayText.getLayoutBounds().getWidth());
+                    displayText.setText(rowList.currentString());
                     //System.out.println(displayText.getText());  
                     keyEvent.consume();
-                } else if(characterTyped.length() == 0 && eventList.size() != 0) { // Type "backspace" (Strange in macOS???)
-                	//System.out.println("Key backspace");
-                	eventList.removeLast();
-                	String currentText = "";
-                    for(int i = 0; i < eventList.size(); i++) {
-                    	currentText += eventList.get(i);
-                    }
-                    displayText.setText(currentText);
-                    //System.out.println(displayText.getText());  
+                } else if(characterTyped == "") { // Type "backspace" (Strange in macOS???)
+                	rowList.remove();
+                    displayText.setText(rowList.currentString());
                     keyEvent.consume();
-                } else if(characterTyped.charAt(0) == 13) { // Type "Enter" to next line
-                	eventList.add("\n");
+                } else if(characterTyped == 13) { // Type "Enter" to next line
+                	totalRows += 1;
+                	lineMap.put(totalRows, new charLinkedList());
                 }
                 centerTextAndUpdateBoundingBox();
 
@@ -136,8 +136,8 @@ public class Editor extends Application {
             // double textLeft = textCenterX;
 
             // Re-position the text.
-            displayText.setX(textCenterX);
-            displayText.setY(textCenterY);
+            displayText.setX(startPosX);
+            displayText.setY(startPosY);
 
             // Re-size and re-position the bounding box.
             textBoundingBox.setHeight(STARTING_FONT_SIZE);
@@ -145,7 +145,7 @@ public class Editor extends Application {
 
             // For rectangles, the position is the upper left hand corner.
             textBoundingBox.setX(textWidth);
-            textBoundingBox.setY(textCenterY);
+            textBoundingBox.setY(startPosY);
             // Many of the JavaFX classes have implemented the toString() function, so that
             // they print nicely by default.
             System.out.println("Bounding box: " + textBoundingBox);
@@ -154,6 +154,42 @@ public class Editor extends Application {
             displayText.toFront();
         }
 
+    }
+
+    /** An EventHandler to handle changing the color of the rectangle. */
+    private class RectangleBlinkEventHandler implements EventHandler<ActionEvent> {
+        private int currentColorIndex = 0;
+        private Color[] boxColors =
+                {Color.LIGHTPINK, Color.ORANGE, Color.YELLOW,
+                        Color.GREEN, Color.LIGHTBLUE, Color.PURPLE};
+
+        RectangleBlinkEventHandler() {
+            // Set the color to be the first color in the list.
+            changeColor();
+        }
+
+        private void changeColor() {
+            textBoundingBox.setFill(boxColors[currentColorIndex]);
+            currentColorIndex = (currentColorIndex + 1) % boxColors.length;
+        }
+
+        @Override
+        public void handle(ActionEvent event) {
+            changeColor();
+        }
+    }
+
+    /** Makes the text bounding box change color periodically. */
+    public void makeRectangleColorChange() {
+        // Create a Timeline that will call the "handle" function of RectangleBlinkEventHandler
+        // every 1 second.
+        final Timeline timeline = new Timeline();
+        // The rectangle should continue blinking forever.
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        RectangleBlinkEventHandler cursorChange = new RectangleBlinkEventHandler();
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(1), cursorChange);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
     }
 
 
@@ -177,10 +213,9 @@ public class Editor extends Application {
         scene.setOnKeyPressed(keyEventHandler);
 
         // All new Nodes need to be added to the root in order to be displayed.
-        //root.getChildren().add(textBoundingBox);
+       	// root.getChildren().add(textBoundingBox);
         // makeRectangleColorChange();
 
-        //System.out.println("YOOOOOOOOOOOÔPPPPP!");
         primaryStage.setTitle("Editor");
 
         // This is boilerplate, necessary to setup the window where things are displayed.

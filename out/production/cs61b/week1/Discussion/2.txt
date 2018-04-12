@@ -1,5 +1,0 @@
-1. The mystery will return 4, which is the index of the element 3.
-
-2. The method, mystery, will return the least integer behind the integer k we give.
-
-3. The method mystery2 will rearrange inputArray inorder, known as sorting. Therefore, inputArray will become {0, 3, 3, 4, 6}.
