@@ -37,10 +37,7 @@ public class Editor extends Application {
     }
 
     private class KeyEventHandler implements EventHandler<KeyEvent> {
-        int startPosX;
-        int startPosY;
-        int totalRows;
-
+       
         private static final int STARTING_FONT_SIZE = 20;
 
         /** The Text to display on the screen. */
@@ -53,105 +50,16 @@ public class Editor extends Application {
         charLinkedList rowList;
         /* Record the line of the eventList */
         HashMap<Integer, charLinkedList> lineMap;
-        /* Store key corrdinate int the LinkedList */
-        // LinkedList<Double[2]> coordiList;
-        /* Record the corresponded coordinate */
-        // HashMap<Integer, LinkedList<Double[2]>> coordiMap;
 
 
         KeyEventHandler(final Group root, int windowWidth, int windowHeight) {
-            startPosX = STARTING_FONT_SIZE / 2;
-            startPosY = STARTING_FONT_SIZE / 2;
-            totalRows = 1;
-            // Initialize some empty text and add it to root so that it will be displayed.
-            displayText = new Text(startPosX, startPosY, "");
-            // Always set the text origin to be VPos.TOP! Setting the origin to be VPos.TOP means
-            // that when the text is assigned a y-position, that position corresponds to the
-            // highest position across all letters (for example, the top of a letter like "I", as
-            // opposed to the top of a letter like "e"), which makes calculating positions much
-            // simpler!
-            displayText.setTextOrigin(VPos.TOP);
-            displayText.setFont(Font.font(fontName, fontSize));
-            root.getChildren().add(displayText);
-
-            /* Construct keyEvnet List */
-            rowList = new charLinkedList();
-            /* Construct line map */
-            lineMap.put(totalRows, rowList);
+            
         }
 
 
         @Override
         public void handle(KeyEvent keyEvent) {
-            if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
-                // Use the KEY_TYPED event rather than KEY_PRESSED for letter keys, because with
-                // the KEY_TYPED event, javafx handles the "Shift" key and associated
-                // capitalization.
-                //System.out.println("KeyTyped");
-                Character characterTyped = keyEvent.getCharacter();
-                if (characterTyped != 127) {
-                	//System.out.println("Ignore ctrl, delete");
-                    // Ignore control keys, which have zero length, as well as the backspace
-                    // key, which is represented as a character of value = 8 on Windows.
-                    rowList.add(characterTyped, displayText.getLayoutBounds().getHeight(), displayText.getLayoutBounds().getWidth());
-                    displayText.setText(rowList.currentString());
-                    //System.out.println(displayText.getText());  
-                    keyEvent.consume();
-                } else if(characterTyped == "") { // Type "backspace" (Strange in macOS???)
-                	rowList.remove();
-                    displayText.setText(rowList.currentString());
-                    keyEvent.consume();
-                } else if(characterTyped == 13) { // Type "Enter" to next line
-                	totalRows += 1;
-                	lineMap.put(totalRows, new charLinkedList());
-                }
-                centerTextAndUpdateBoundingBox();
-
-            } else if (keyEvent.getEventType() == KeyEvent.KEY_PRESSED) {
-            	//System.out.println("KeyPressed");
-                // Arrow keys should be processed using the KEY_PRESSED event, because KEY_PRESSED
-                // events have a code that we can check (KEY_TYPED events don't have an associated
-                // KeyCode).
-                KeyCode code = keyEvent.getCode();
-                if (code == KeyCode.UP) {
-                    fontSize += 5;
-                    displayText.setFont(Font.font(fontName, fontSize));
-                    centerTextAndUpdateBoundingBox();
-                } else if (code == KeyCode.DOWN) {
-                    fontSize = Math.max(0, fontSize - 5);
-                    displayText.setFont(Font.font(fontName, fontSize));
-                    centerTextAndUpdateBoundingBox();
-                }
-            }
-        }
-
-
-        private void centerTextAndUpdateBoundingBox() {
-            // Figure out the size of the current text.
-            double textHeight = displayText.getLayoutBounds().getHeight();
-            double textWidth = displayText.getLayoutBounds().getWidth();
-
-            // Calculate the position so that the text will be Left-Top of the screen.
-            // double textTop = textCenterY;
-            // double textLeft = textCenterX;
-
-            // Re-position the text.
-            displayText.setX(startPosX);
-            displayText.setY(startPosY);
-
-            // Re-size and re-position the bounding box.
-            textBoundingBox.setHeight(STARTING_FONT_SIZE);
-            textBoundingBox.setWidth(STARTING_FONT_SIZE / 2);
-
-            // For rectangles, the position is the upper left hand corner.
-            textBoundingBox.setX(textWidth);
-            textBoundingBox.setY(startPosY);
-            // Many of the JavaFX classes have implemented the toString() function, so that
-            // they print nicely by default.
-            System.out.println("Bounding box: " + textBoundingBox);
-
-            // Make sure the text appears in front of the rectangle.
-            displayText.toFront();
+           
         }
 
     }

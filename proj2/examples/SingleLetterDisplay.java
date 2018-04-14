@@ -65,6 +65,7 @@ public class SingleLetterDisplay extends Application {
 
         @Override
         public void handle(KeyEvent keyEvent) {
+            System.out.println(displayText.getText());
             if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
                 // Use the KEY_TYPED event rather than KEY_PRESSED for letter keys, because with
                 // the KEY_TYPED event, javafx handles the "Shift" key and associated
