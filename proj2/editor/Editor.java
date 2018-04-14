@@ -39,6 +39,8 @@ public class Editor extends Application {
     private class KeyEventHandler implements EventHandler<KeyEvent> {
        
         private static final int STARTING_FONT_SIZE = 20;
+        private static final int STARTING_TEXT_POSITION_X = STARTING_FONT_SIZE / 2;
+        private static final int STARTING_TEXT_POSITION_Y = STARTING_FONT_SIZE / 2;
 
         /** The Text to display on the screen. */
         private Text displayText;
@@ -46,20 +48,64 @@ public class Editor extends Application {
 
         private String fontName = "Verdana";
 
-        /* Store keyEvent in the LinkedList */
-        charLinkedList rowList;
-        /* Record the line of the eventList */
-        HashMap<Integer, charLinkedList> lineMap;
+        /* Store each Text object into a linkedlist for each line */
+        private LinkedList<Text> rowList;
+        /* Record each line of the eventList */
+        private HashMap<Integer, LinkedList<Text>> lineMap;
+        /* Record the current line */
+        private int currLine;
 
+        KeyEventHandler(final Group root) {
+            /* Initialize the Text displayText */
+            displayText = new Text(STARTING_TEXT_POSITION_X, STARTING_TEXT_POSITION_Y, "");
 
-        KeyEventHandler(final Group root, int windowWidth, int windowHeight) {
-            
+            /* Initialize the current line to 1 */
+            currLine = 1;
+
+            /* Initialize the container of the texts */
+            rowList = new LinkedList<Text>();
+            lineMap = new HashMap<Integer, LinkedList<Text>>();
+            lineMap.put(currLine, rowList);
+
+            // Always set the text origin to be VPos.TOP! Setting the origin to be VPos.TOP means
+            // that when the text is assigned a y-position, that position corresponds to the
+            // highest position across all letters (for example, the top of a letter like "I", as
+            // opposed to the top of a letter like "e"), which makes calculating positions much
+            // simpler!
+            displayText.setTextOrigin(VPos.TOP);
+            displayText.setFont(Font.font(fontName, fontSize));
+            root.getChildren().add(displayText);
         }
 
 
         @Override
         public void handle(KeyEvent keyEvent) {
-           
+           if (keyEvent.getEventType() == KeyEvent.KEY_TYPED) {
+                // Use the KEY_TYPED event rather than KEY_PRESSED for letter keys, because with
+                // the KEY_TYPED event, javafx handles the "Shift" key and associated
+                // capitalization.
+                String characterTyped = keyEvent.getCharacter();
+                if (characterTyped.length() > 0 && characterTyped.charAt(0) != 8) {
+                    // Ignore control keys, which have zero length, as well as the backspace
+                    // key, which is represented as a character of value = 8 on Windows.
+                    displayText.setText(characterTyped);
+                    keyEvent.consume();
+                }
+                positionTextAndUpdateBoundingBox();
+                // Add the text into container when KeyEvent happened
+                lineMap.get(currLine).add(displayText);
+            }
+        }
+
+
+        /* position the Text to the right place (corresponding to others Text) and 
+        ** update the boundingbox */
+        private void positionTextAndUpdateBoundingBox() {
+            // Figure out the size of the current text.
+            double textHeight = displayText.getLayoutBounds().getHeight();
+            double textWidth = displayText.getLayoutBounds().getWidth();
+
+            
         }
 
     }
@@ -113,8 +159,7 @@ public class Editor extends Application {
         // To get information about what keys the user is pressing, create an EventHandler.
         // EventHandler subclasses must override the "handle" function, which will be called
         // by javafx.
-        EventHandler<KeyEvent> keyEventHandler =
-                new KeyEventHandler(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        EventHandler<KeyEvent> keyEventHandler = new KeyEventHandler(root);
 
         // Register the event handler to be called for all KEY_PRESSED and KEY_TYPED events.
         scene.setOnKeyTyped(keyEventHandler);
