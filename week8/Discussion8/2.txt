@@ -1,0 +1,9 @@
+2. More Runtime Analyzing
+
+	A. Roughly, N/2 + (N/2 - 1) + ... + 2 + 1 = (N/2 + 1) * N/2 * 1/2
+		= N^2/8 + N/4 --> Theta(N^2)
+
+	B. For example, N = 9, the answer is 8 + 4 + 2 + 1. So, in general, 
+		(2^(N-1/2) - 1) / 2-1 = 2^(N-1/2) - 1 --> Theta(2^N)
+
+	C. Theta(N^2) ?

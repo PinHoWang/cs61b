@@ -1,0 +1,11 @@
+1. Which is faster?
+	
+	A. The Algorithm 1 is faster.
+	B. It's not guaranteed which algorithm is faster. Because both of the algorithms have lower bound, e.g. Algorithm 1 has best case Omega(N), Algorithm 2 has Omega(N^2).
+
+	C. Same situation as B, but Upper bound (worst case).
+
+	D. Algorithm 2 is faster than Algorithm 1. Because Algorithm 1 has tight bound Theta(N^2), but Algorithm 2 has Upper bound (worst case) O(logN).
+
+	E. Not guaranteed. 
+
