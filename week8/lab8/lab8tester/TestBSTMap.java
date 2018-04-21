@@ -19,7 +19,7 @@ public class TestBSTMap {
     }
 
     //assumes put/size/containsKey/get work
-	//@Test
+	@Test
     public void sanityClearTest() {
     	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
         for (int i = 0; i < 455; i++) {
@@ -36,7 +36,7 @@ public class TestBSTMap {
     }
 
     // assumes put works
-    //@Test
+    @Test
     public void sanityContainsKeyTest() {
     	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
         assertFalse(b.containsKey("waterYouDoingHere"));
@@ -45,7 +45,7 @@ public class TestBSTMap {
     }
 
     // assumes put works
-    //@Test
+    @Test
     public void sanityGetTest() {
     	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
         assertEquals(null,b.get("starChild"));
@@ -69,7 +69,7 @@ public class TestBSTMap {
     }
 
     //assumes get/containskey work
-    //@Test
+    @Test
     public void sanityPutTest() {
     	BSTMap<String, Integer> b = new BSTMap<String, Integer>();
         b.put("hi", 1);
