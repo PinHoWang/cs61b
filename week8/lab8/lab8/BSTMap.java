@@ -13,11 +13,13 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 		private V val;
 		private Node left, right; // left and right node
 		private int SubTreeSize; // size of the subtree
+		private boolean available; // Using in the tree travrsal
 
 		private Node(K key, V val, int size) {
 			this.key = key;
 			this.val = val;
 			this.SubTreeSize = size;
+			this.available = true;
 		}
 	}
 
@@ -111,9 +113,53 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
 	@Override
     public Iterator<K> iterator() {
+    	// return new BSTIterator();
         throw new UnsupportedOperationException("Unsupport REMOVE Operation!");
     }
 
+    // Implement keyIterator class for iterator() method
+    private class BSTIterator {
+
+    	private Node next;
+    	public BSTIterator(Node root) {
+    		next = root;
+    		if(next == null)
+            return;
+
+        	while (next.left != null)
+           		next = next.left;
+    	}
+
+    	public boolean hasNext() {
+    		return next != null;
+    	}
+
+    	public Node next() {
+    		if(!hasNext()) throw new NoSuchElementException();
+        	Node r = next;
+
+        	// If you can walk right, walk right, then fully left.
+        	// otherwise, walk up until you come from left.
+        	if(next.right != null) {
+            	next = next.right;
+            	while (next.left != null)
+                	next = next.left;
+            	return r;
+        	}
+
+        	while(true) {
+            	if(next.parent == null) {
+                	next = null;
+                	return r;
+            	}
+            	if(next.parent.left == next) {
+                	next = next.parent;
+               		return r;
+            	}
+            	next = next.parent;
+        	}
+     	}
+    }
 
 	public void printInOrder() {
 		// print the item in tree in order ...
