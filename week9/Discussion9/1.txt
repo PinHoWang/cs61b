@@ -1,0 +1,7 @@
+Fun with Hash Functions
+
+(a) It is invalid because every Integer return -1. The hashCode() method should return distinguish value.
+
+(b) It is valid. But the disadvantage is that the return value could be large.
+
+(c) It is valid because every Integer has their own hashcode, but the class also implement the Object could have the same hashcode value to Integer even if they are different.

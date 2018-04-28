@@ -1,0 +1,6 @@
+3. Analyzing Proj1 ArrayDeque's Runtime
+
+				Best Case	Worst Case	Average Case
+addFirst/Last		1			1			1
+removeFirst/Last	1			1			1
+	get				1			N			N

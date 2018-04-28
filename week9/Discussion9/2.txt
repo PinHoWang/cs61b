@@ -1,0 +1,5 @@
+2. HashMap Modification
+
+(a) Sometimes. Once we modify the key, we first have to remember the value of this key, and then we have to triverse all value to find this value and change this key, because we can not locate the position by simply find this key.
+
+(b) Always. We can simply find this key again and modify this value.
