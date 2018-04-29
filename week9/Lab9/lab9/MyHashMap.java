@@ -11,64 +11,82 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	// Storage all key with unique value
 	private HashSet<K> keySet;
 	// Hash table
-	private ArrayList<LinkedList> hashTable;
+	private ArrayList<V> hashTable;
 	// Size of HashMap
 	private int size;
+	// Contains of HashMap
+	private int contain;
 	// LoadFactor
 	private double lf;
 
 	public MyHashMap() {
 		keySet = new HashSet<K>();
-		size = 8;
-		hashTable = new ArrayList<LinkedList>(size);
+		size = 0;
+		contain = 8;
+		hashTable = new ArrayList<V>(contain);
 		lf = 2;
 	}
 
 	public MyHashMap(int initialSize) {
 		keySet = new HashSet<K>();
-		size = initialSize;
-		hashTable = new ArrayList<LinkedList>(size);
+		size = 0;
+		contain = initialSize;
+		hashTable = new ArrayList<V>(contain);
 		lf = 2;
 	}
 
 	public MyHashMap(int initialSize, double loadFactor) {
 		keySet = new HashSet<K>();
-		size = initialSize;
-		hashTable = new ArrayList<LinkedList>(size);
+		size = 0;
+		contain = initialSize;
+		hashTable = new ArrayList<V>(contain);
 		lf = loadFactor;
+	}
+
+	// Once the size larger than container, resize with loadFactor
+	public void Resize() {
+		contain = contain * lf;
+		hashTable.ensureCapacity(contain);
 	}
 	
 	/** Removes all of the mappings from this map. */
 	@Override
 	public void clear() {
-
+		keySet = new HashSet<K>();
+		size = 0;
+		hashTable = new ArrayList<V>(contain);
+		lf = 2; 
 	}
 
 	/* Returns true if this map contains a mapping for the specified key. */
 	@Override
 	public boolean containsKey(K key) {
-		return false;
+		return HashSet.contains(key);
 	}
 
 
 	/* Returns the value to which the specified key is mapped, or null if this
      * map contains no mapping for the key. 
      */
-	// @Override
-	// public V get(K key) {
-
-	// }
+	@Override
+	public V get(K key) {
+		return hashTable.get(key);
+	}
 
 	/* Returns the number of key-value mappings in this map. */
 	@Override
 	public int size() {
-		return 0;
+		return size;
 	}
 
 
 	/* Associates the specified value with the specified key in this map. */
 	@Override
 	public void put(K key, V value) {
+		if(size >= contain) Resize();
+		if(HashSet.contains(key)) throw new UnsupportedOperationException("The " + key + " is already exit.");
+
+		keySet.add(key);
 
 	}
 
