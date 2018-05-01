@@ -8,10 +8,24 @@ import java.util.Iterator;
 
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
+
+	// HashNode class: Store in the external chaining
+	private class HashNode {
+		private K key;
+		private V value;
+		private HashNode next;
+
+		private HashNode(K k, V v) {
+			key = k;
+			value = v;
+			next = null;
+		}
+	}
+
 	// Storage all key with unique value
 	private HashSet<K> keySet;
 	// Hash table
-	private ArrayList<V> hashTable;
+	private HashNode[] hashTable;
 	// Size of HashMap
 	private int size;
 	// Contains of HashMap
@@ -23,7 +37,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = 8;
-		hashTable = new ArrayList<V>(contain);
+		hashTable = (HashNode[]) new Object[contain];
 		lf = 2;
 	}
 
@@ -31,7 +45,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = new ArrayList<V>(contain);
+		hashTable = (HashNode[]) new Object[contain];
 		lf = 2;
 	}
 
@@ -39,14 +53,23 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = new ArrayList<V>(contain);
+		hashTable = (HashNode[]) new Object[contain];
 		lf = loadFactor;
 	}
 
 	// Once the size larger than container, resize with loadFactor
-	public void Resize() {
-		contain = contain * lf;
-		hashTable.ensureCapacity(contain);
+	private void Resize() {
+		contain = (int) ((double) contain * lf);
+		HashNode[] newTable = (HashNode[]) new Object[contain];
+		System.arraycopy(hashTable, 0, newTable, 0, hashTable.length);
+		hashTable = newTable;
+	}
+
+	// Return the key's hashcode
+	private int hashcode(K key) {
+		// System.out.println(key.hashCode());
+		// System.out.println(key.hashCode() % contain);
+		return key.hashCode() % contain;
 	}
 	
 	/** Removes all of the mappings from this map. */
@@ -54,14 +77,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	public void clear() {
 		keySet = new HashSet<K>();
 		size = 0;
-		hashTable = new ArrayList<V>(contain);
-		lf = 2; 
+		hashTable = (HashNode[]) new Object[contain];
 	}
 
 	/* Returns true if this map contains a mapping for the specified key. */
 	@Override
 	public boolean containsKey(K key) {
-		return HashSet.contains(key);
+		return keySet.contains(key);
 	}
 
 
@@ -70,7 +92,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
 	@Override
 	public V get(K key) {
-		return hashTable.get(key);
+		if(containsKey(key)) {
+			HashNode ptr = hashTable[hashcode(key)];
+			while(ptr.next != null) {
+				if(ptr.value == key) return ptr.value;
+				ptr = ptr.next;
+			}
+		}
+		return null;
 	}
 
 	/* Returns the number of key-value mappings in this map. */
@@ -83,18 +112,33 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	/* Associates the specified value with the specified key in this map. */
 	@Override
 	public void put(K key, V value) {
-		if(size >= contain) Resize();
-		if(HashSet.contains(key)) throw new UnsupportedOperationException("The " + key + " is already exit.");
+		if(size == contain) {
+			Resize();
+		}
 
-		keySet.add(key);
-
+		int code = hashcode(key); // Find the corresponding hash index bucket
+		HashNode head = hashTable[code];
+		if(head == null) {
+			keySet.add(key);
+			head = new HashNode(key, value);
+			size++;
+		}
+		else {
+			keySet.add(key);
+			HashNode ptr = head;
+			while(ptr.next != null) {
+				ptr = ptr.next;
+			}
+			ptr.next = new HashNode(key, value);
+			size++;
+		}
 	}
 
 	/* Returns a Set view of the keys contained in this map. */
-	// @Override
-	// public Set<K> keySet() {
-
-	// }
+	@Override
+	public Set<K> keySet() {
+		return keySet;
+	}
 
 
 	/* Removes the mapping for the specified key from this map if present.
