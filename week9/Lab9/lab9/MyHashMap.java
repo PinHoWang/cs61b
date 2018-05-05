@@ -10,30 +10,48 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
 
 	// HashNode class: Store in the external chaining
-	protected static class HashNode<K, V> {
-		public K key;
-		public V value;
-		public HashNode next;
+	private class HashNode<K, V> {
+		private K key;
+		private V value;
+		private HashNode next;
+		private boolean init;
 
 		public V getValue() {
-			return value;
+			return this.value;
 		}
 
 		public K getKey() {
-			return  key;
+			return this.key;
+		}
+
+		public boolean initial() {
+			return init;
+		}
+
+		public void setKey(K key) {
+			this.key = key;
+		}
+
+		public void setValue(V value) {
+			this.value = value;
+		}
+
+		public HashNode() {
+			init = false;
 		}
 
 		public HashNode(K k, V v) {
 			key = k;
 			value = v;
 			next = null;
+			init = true;
 		}
 	}
 
 	// Storage all key with unique value
 	private HashSet<K> keySet;
 	// Hash table
-	private HashNode[] hashTable;
+	private ArrayList<HashNode> hashTable;
 	// Size of HashMap
 	private int size;
 	// Contains of HashMap
@@ -45,7 +63,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = 8;
-		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
+		hashTable = new ArrayList<HashNode>(contain);
+		for(int i = 0; i < contain; i++) {
+			HashNode<K, V> h = new HashNode<K, V>();
+			hashTable.add(i, h);
+		}
 		lf = 2;
 	}
 
@@ -53,7 +75,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
+		hashTable = new ArrayList<HashNode>(contain);
+		for(int i = 0; i < contain; i++) {
+			HashNode<K, V> h = new HashNode<K, V>();
+			hashTable.add(i, h);
+		}
 		lf = 2;
 	}
 
@@ -61,23 +87,29 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
+		hashTable = new ArrayList<HashNode>(contain);
+		for(int i = 0; i < contain; i++) {
+			HashNode<K, V> h = new HashNode<K, V>();
+			hashTable.add(i, h);
+		}
 		lf = loadFactor;
 	}
 
 	// Once the size larger than container, resize with loadFactor
 	private void Resize() {
-		contain = (int) ((double) contain * lf);
-		HashNode[] newTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
-		System.arraycopy(hashTable, 0, newTable, 0, hashTable.length);
-		hashTable = newTable;
+		int newContain = (int) ((double) contain * lf);
+		ArrayList<HashNode> newHashTable = new ArrayList<HashNode>();
+		
+		hashTable.ensureCapacity(contain);
 	}
 
 	// Return the key's hashcode
 	private int hashcode(K key) {
 		// System.out.println(key.hashCode());
 		// System.out.println(key.hashCode() % contain);
-		return key.hashCode() % contain;
+		int i = key.hashCode() % contain;
+		if(i == -1) i += contain;
+		return i;
 	}
 	
 	/** Removes all of the mappings from this map. */
@@ -85,7 +117,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	public void clear() {
 		keySet = new HashSet<K>();
 		size = 0;
-		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
+		hashTable = new ArrayList<HashNode>(contain);
+		for(int i = 0; i < contain; i++) {
+			HashNode<K, V> h = new HashNode<K, V>();
+			hashTable.add(i, h);
+		}
 	}
 
 	/* Returns true if this map contains a mapping for the specified key. */
@@ -100,16 +136,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
 	@Override
 	public V get(K key) {
-		if(containsKey(key)) {
-			HashNode<K, V> ptr = hashTable[hashcode(key)];
+		if(!containsKey(key)) return null;
+		else {
+			// System.out.println("contain key");
+			HashNode<K, V> ptr = hashTable.get(hashcode(key));
 			while(ptr.next != null) {
-				if(ptr.getValue() == key) {
+				if(ptr.getKey() == key) {
+					// System.out.println("get Key");
 					return ptr.getValue();
 				}
 				ptr = ptr.next;
 			}
+			return ptr.getValue();
 		}
-		return null;
 	}
 
 	/* Returns the number of key-value mappings in this map. */
@@ -122,20 +161,22 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	/* Associates the specified value with the specified key in this map. */
 	@Override
 	public void put(K key, V value) {
-		if(size == contain) {
-			Resize();
-		}
+		// if(size == contain) {
+		// 	Resize();
+		// }
 
 		int code = hashcode(key); // Find the corresponding hash index bucket
-		HashNode head = hashTable[code];
-		if(head == null) {
+		// System.out.println(code);
+		HashNode<K, V> head = hashTable.get(code);
+		if(!head.initial()) {
 			keySet.add(key);
-			head = new HashNode(key, value);
+			head.setKey(key);
+			head.setValue(value);
 			size++;
 		}
 		else {
 			keySet.add(key);
-			HashNode ptr = head;
+			HashNode<K, V> ptr = hashTable.get(code);
 			while(ptr.next != null) {
 				ptr = ptr.next;
 			}

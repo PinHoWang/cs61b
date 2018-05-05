@@ -22,7 +22,7 @@ public class TestMyHashMap {
     }
 
     //assumes put/size/containsKey/get work
-	// @Test
+	@Test
     public void sanityClearTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         for (int i = 0; i < 455; i++) {
@@ -39,7 +39,7 @@ public class TestMyHashMap {
     }
 
     // assumes put works
-    // @Test
+    @Test
     public void sanityContainsKeyTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         assertFalse(b.containsKey("waterYouDoingHere"));
@@ -48,7 +48,7 @@ public class TestMyHashMap {
     }
 
     // assumes put works
-    // @Test
+    @Test
     public void sanityGetTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         assertEquals(null,b.get("starChild"));
@@ -60,7 +60,7 @@ public class TestMyHashMap {
     }
 
     // assumes put works
-    // @Test
+    @Test
     public void sanitySizeTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         assertEquals(0, b.size());
@@ -82,7 +82,7 @@ public class TestMyHashMap {
     /* 
     * Sanity test for keySet
     */
-    // @Test
+    @Test
     public void sanityKeySetTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         HashSet<String> values = new HashSet<String>();
