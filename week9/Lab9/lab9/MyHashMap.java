@@ -10,12 +10,20 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
 
 	// HashNode class: Store in the external chaining
-	private class HashNode {
-		private K key;
-		private V value;
-		private HashNode next;
+	protected static class HashNode<K, V> {
+		public K key;
+		public V value;
+		public HashNode next;
 
-		private HashNode(K k, V v) {
+		public V getValue() {
+			return value;
+		}
+
+		public K getKey() {
+			return  key;
+		}
+
+		public HashNode(K k, V v) {
 			key = k;
 			value = v;
 			next = null;
@@ -37,7 +45,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = 8;
-		hashTable = (HashNode[]) new Object[contain];
+		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
 		lf = 2;
 	}
 
@@ -45,7 +53,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = (HashNode[]) new Object[contain];
+		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
 		lf = 2;
 	}
 
@@ -53,14 +61,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		keySet = new HashSet<K>();
 		size = 0;
 		contain = initialSize;
-		hashTable = (HashNode[]) new Object[contain];
+		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
 		lf = loadFactor;
 	}
 
 	// Once the size larger than container, resize with loadFactor
 	private void Resize() {
 		contain = (int) ((double) contain * lf);
-		HashNode[] newTable = (HashNode[]) new Object[contain];
+		HashNode[] newTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
 		System.arraycopy(hashTable, 0, newTable, 0, hashTable.length);
 		hashTable = newTable;
 	}
@@ -77,7 +85,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	public void clear() {
 		keySet = new HashSet<K>();
 		size = 0;
-		hashTable = (HashNode[]) new Object[contain];
+		hashTable = (HashNode<K, V>[]) new HashNode<?, ?>[contain];
 	}
 
 	/* Returns true if this map contains a mapping for the specified key. */
@@ -93,9 +101,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 	@Override
 	public V get(K key) {
 		if(containsKey(key)) {
-			HashNode ptr = hashTable[hashcode(key)];
+			HashNode<K, V> ptr = hashTable[hashcode(key)];
 			while(ptr.next != null) {
-				if(ptr.value == key) return ptr.value;
+				if(ptr.getValue() == key) {
+					return ptr.getValue();
+				}
 				ptr = ptr.next;
 			}
 		}

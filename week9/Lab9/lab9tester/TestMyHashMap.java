@@ -8,6 +8,7 @@ import java.util.Set;
 /** Tests by Brendan Hu, Spring 2015, revised for 2016 by Josh Hug */
 public class TestMyHashMap {
 
+   
 	@Test
     public void sanityGenericsTest() {
     	try {
@@ -71,7 +72,7 @@ public class TestMyHashMap {
     }
 
     //assumes get/containskey work
-    // @Test
+    @Test
     public void sanityPutTest() {
     	MyHashMap<String, Integer> b = new MyHashMap<String, Integer>();
         b.put("hi", 1);
