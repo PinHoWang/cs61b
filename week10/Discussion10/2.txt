@@ -1,0 +1,8 @@
+Ding Dong Design Discussion: A Better Hash Map?
+
+Ding
+Cons: The method can make sure contains() and insert() functions run in linear time.
+
+Pros: May have collision.
+
+Dong is not totally right because the hash map need to be improved when the load factor (N/M) become larger than 1.

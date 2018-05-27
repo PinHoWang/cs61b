@@ -1,0 +1,5 @@
+
+To implement the Max-heap data structure, we can use the methods in Min-heap.
+The insert() method still the same(insert into Min-heap).
+When we can getLargest(), we can use the removeSmallest() method in Min-heap, and the last item is the largest, so return it!
+When we call removeLargest() method, we can just remove it from the buttom of the Min-heap structure.

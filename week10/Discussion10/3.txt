@@ -1,0 +1,17 @@
+Coco's Guerrilla Section Conundrum
+
++----+
+| 97 |-> 9(a) -> 5(a)
++----+
+| 98 |-> 2(u) -> 5(b)
++----+
+| .  |
+  .
+  .
+  .
++----+
+| 106|
++----+
+  
+
+There are two hash collisions, 9, 5 and 2, 5. The load factor for 4 items is 4/10 = 0.4

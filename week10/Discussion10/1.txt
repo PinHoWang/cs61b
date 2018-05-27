@@ -1,0 +1,6 @@
+Balanced and Valid BSTs
+
+All the BSTs are valid. 
+The 1st BST is Min-Height. The 2nd and the 3rd are not the Min-Height.
+
+
