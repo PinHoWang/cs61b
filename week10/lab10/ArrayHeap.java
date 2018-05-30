@@ -12,7 +12,14 @@ public class ArrayHeap<T> {
 	 * Inserts an item with the given priority value. This is enqueue, or offer.
 	 */
 	public void insert(T item, double priority) {
-		
+		Node n = new Node(item, priority);
+		if(contents.size() == 0) {
+			setNode(1, n);
+		}
+		else {
+			setNode(contents.size() - 1, n);
+			bubbleUp(contents.size() - 1);
+		}
 	}
 
 	/**
@@ -30,7 +37,11 @@ public class ArrayHeap<T> {
 	 */
 	public Node removeMin() {
 		// TODO Complete this method!
-		return null;
+		swap(1, contents.size()-2); // The last item's index in the heap is the size - 2.
+		Node n = contents.get(contents.size() - 2);
+		contents.remove(contents.size() - 2);
+		bubbleDown(1);
+		return n;
 	}
 
 	/**
@@ -133,7 +144,7 @@ public class ArrayHeap<T> {
 	/**
 	 * Adds the given node as the right child of the node at the given index.
 	 */
-	private void setRight(int inde, Node n) {
+	private void setRight(int index, Node n) {
 		// TODO Complete this method!
 		setNode(getRightOf(index), n);
 	}
