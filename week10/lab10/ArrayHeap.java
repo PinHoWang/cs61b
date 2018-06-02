@@ -17,7 +17,7 @@ public class ArrayHeap<T> {
 			setNode(1, n);
 		}
 		else {
-			setNode(contents.size() - 1, n);
+			setNode(contents.size(), n);
 			bubbleUp(contents.size() - 1);
 		}
 	}
@@ -39,6 +39,7 @@ public class ArrayHeap<T> {
 		// TODO Complete this method!
 		swap(1, contents.size()-2); // The last item's index in the heap is the size - 2.
 		Node n = contents.get(contents.size() - 2);
+		// System.out.println(n.item());
 		contents.remove(contents.size() - 2);
 		bubbleDown(1);
 		return n;
@@ -90,10 +91,10 @@ public class ArrayHeap<T> {
 		}
 	}
 
-	private void setNode(int index, Node n) {
+	public void setNode(int index, Node n) {
 		// In the case that the ArrayList is not big enough
 		// add null elements until it is the right size
-		while (index + 1 >= contents.size()) {
+		while (index + 1 > contents.size()) {
 			contents.add(null);
 		}
 		contents.set(index, n);
@@ -154,6 +155,8 @@ public class ArrayHeap<T> {
 	 */
 	private void bubbleUp(int index) {
 		// TODO Complete this method!
+		if(index == 1) return; // Up to the root
+
 		if(min(index, index/2) == index/2) {
 			swap(index, index/2);
 			bubbleUp(index/2);
@@ -213,6 +216,14 @@ public class ArrayHeap<T> {
 		}
 	}
 
+	/* JW on 06/02/2018 */
+	public void printHeap() {
+		for(int i = 1; i < contents.size(); i++) {
+			System.out.print(contents.get(i).item() + " ");
+		}
+		System.out.println();
+	}
+
 	public static void main(String[] args) {
 		ArrayHeap<String> heap = new ArrayHeap<String>();
 		heap.insert("c", 3);
@@ -226,6 +237,7 @@ public class ArrayHeap<T> {
 		heap.insert("c", 3);
 		heap.insert("d", 4);
 		System.out.println(heap);
+		// heap.printHeap();
 	}
 
 }
