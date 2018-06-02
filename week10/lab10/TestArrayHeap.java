@@ -20,6 +20,7 @@ public class TestArrayHeap {
 
 		List<Double> sortedItems = new ArrayList<>();
 
+		heap.printHeap();
 		sortedItems.add(heap.removeMin().priority());
 		sortedItems.add(heap.removeMin().priority());
 		sortedItems.add(heap.removeMin().priority());
@@ -31,6 +32,7 @@ public class TestArrayHeap {
 		sortedItems.add(heap.removeMin().priority());
 		sortedItems.add(heap.removeMin().priority());
 
+		System.out.println(sortedItems);
 		assertIsSorted("Failed heap test given to you in the main method.", sortedItems);
 	}
 

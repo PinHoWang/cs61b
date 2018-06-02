@@ -37,10 +37,9 @@ public class ArrayHeap<T> {
 	 */
 	public Node removeMin() {
 		// TODO Complete this method!
-		swap(1, contents.size()-2); // The last item's index in the heap is the size - 2.
-		Node n = contents.get(contents.size() - 2);
-		// System.out.println(n.item());
-		contents.remove(contents.size() - 2);
+		swap(1, contents.size() - 1); // The last item's index in the heap is the size - 1.
+		Node n = contents.get(contents.size() - 1);
+		contents.remove(contents.size() - 1);
 		bubbleDown(1);
 		return n;
 	}
@@ -157,7 +156,7 @@ public class ArrayHeap<T> {
 		// TODO Complete this method!
 		if(index == 1) return; // Up to the root
 
-		if(min(index, index/2) == index/2) {
+		if(min(index, index/2) == index) {
 			swap(index, index/2);
 			bubbleUp(index/2);
 		}
@@ -168,11 +167,25 @@ public class ArrayHeap<T> {
 	 */
 	private void bubbleDown(int index) {
 		// TODO Complete this method!
-		if(min(index, index*2) == index) {
-			swap(index, index*2);
-			bubbleDown(index*2);
+		int leftNodeIndex = 2*index;
+		int rightNodeIndex = 2*index + 1;
+		if(leftNodeIndex > contents.size() - 1 && rightNodeIndex > contents.size() - 1) { 
+			return; // Reach the buttom of the tree.
 		}
-		
+
+		if(min(leftNodeIndex, rightNodeIndex) == leftNodeIndex) {
+			if(min(index, leftNodeIndex) == leftNodeIndex) {
+				swap(index, leftNodeIndex);
+				bubbleDown(leftNodeIndex);
+			}
+		}
+		else if(min(leftNodeIndex, rightNodeIndex) == rightNodeIndex) {
+			if(min(index, rightNodeIndex) == rightNodeIndex) {
+				swap(index, rightNodeIndex);
+				bubbleDown(rightNodeIndex);
+			}
+		}
+		else return;
 	}
 
 	/**
@@ -218,10 +231,7 @@ public class ArrayHeap<T> {
 
 	/* JW on 06/02/2018 */
 	public void printHeap() {
-		for(int i = 1; i < contents.size(); i++) {
-			System.out.print(contents.get(i).item() + " ");
-		}
-		System.out.println();
+		System.out.println(this);
 	}
 
 	public static void main(String[] args) {
@@ -237,7 +247,7 @@ public class ArrayHeap<T> {
 		heap.insert("c", 3);
 		heap.insert("d", 4);
 		System.out.println(heap);
-		// heap.printHeap();
+		
 	}
 
 }
