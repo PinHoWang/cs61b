@@ -1,0 +1,3 @@
+Extra for Experts: Shortest Directed Cycles
+
+In the lecture, the dijkstra algorithm can find out the shortest path of DAG. In this case, cycles one, when the dijkstra algorithm is relaxing, it may be entering the cycles.  

@@ -1,0 +1,5 @@
+DFS and BFS
+
+DFS preorder: ABCFDEG
+DFS postorder: GFCBDEA
+BFS order: ABDCFEG

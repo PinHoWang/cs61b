@@ -1,0 +1,7 @@
+Graph Algorithm Design: Bipartite Graphs
+
+Concept:
+Using the DFS to mark the U and V alterativily. If we can not mark, like all adjancet vertex are same mark, the graph is not bipartite.
+
+So, the DFS runtime is O(E+V).
+
